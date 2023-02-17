@@ -6,18 +6,21 @@ import uuid
 class Seasons(): 
 
   @classmethod 
-  def getseasonAlldata(cls):
+  def getseasonAlldata(cls,lan):
         try:
             connection, cursor = openDbconnection()
-            cursor.execute(
-                """SELECT name_en,name_hi,name_mr,image FROM m_season"""
-            )
-            account = cursor.fetchall()
-            cursor.close()
-            connection.close()
-            cursor.execute(
-                """SELECT name_en,name_hi,name_mr,image FROM m_season"""
-            )
+            if lan == '1' :
+                cursor.execute(
+                    "SELECT uuid as season_uuid,name_en as name,image FROM m_season"
+                )
+            elif lan == '2':
+                 cursor.execute(
+                    "SELECT uuid as season_uuid,name_hi as name,image FROM m_season"
+                )
+            elif lan == '3':
+                 cursor.execute(
+                    "SELECT uuid as season_uuid,name_mr as name,image FROM m_season"
+                )
             account = cursor.fetchall()
             cursor.close()
             connection.close()

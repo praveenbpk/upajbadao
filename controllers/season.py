@@ -4,9 +4,9 @@ from models.season import Seasons
 
 
 
-def getseason():
+def getseason(lan):
      try:     
-        result = Seasons.getseasonAlldata()
+        result = Seasons.getseasonAlldata(lan)
         if result:
             return ({'result':True,'data':result}), 200
         else:
