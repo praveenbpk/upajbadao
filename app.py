@@ -7,3 +7,9 @@ CORS(app)
 
 
 app.register_blueprint(season__bp) 
+
+
+
+if __name__ == '__main__':
+
+    app.run(host='localhost',debug=True)

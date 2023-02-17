@@ -10,11 +10,11 @@ api = Api(season__bp)
 
 class Seasons(Resource):
      
-      def get(self):
+      def get(self,lan):
           
         if (request.method == "GET" ):
             
-            response = getseason()
+            response = getseason(lan)
             return response
 
 # class bookmark(Resource):
