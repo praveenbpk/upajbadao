@@ -1,6 +1,7 @@
 from flask_restful import Resource, Api
 from flask import Flask, request
 from flask import Blueprint
+from controllers.season import *
 
 
 season__bp= Blueprint('season__bp',__name__)
@@ -13,15 +14,31 @@ class Seasons(Resource):
           
         if (request.method == "GET" ):
             
-            response = get_seasonlist()
+            response = getseason()
             return response
 
-class bookmark(Resource):
-     def get(self,uuid,fav):
+# class bookmark(Resource):
+#      def get(self,uuid,fav):
       
-        if uuid and fav == 1:
-            response = bookmarkAdd(uuid,fav)
-            return response
-        else:
-            response = bookmarkremove(uuid,fav)
-            return response    
+#         if uuid and fav == 1:
+#             response = bookmark_add_remove(uuid,fav)
+#             return response
+        # else:
+        #     response = bookmarkremove(uuid,fav)
+        #     return response    
+
+class get_season(Resource):
+    def get(self,uuid):
+        if uuid:
+            response=get_single_season(uuid)
+            return response  
+        else: 
+            return {"result":False,'message':"season not found" },404
+        
+class getcrop(Resource):
+    def get(self,uuid):
+        if uuid:
+            response=get_single_crop(uuid)
+            return response  
+        else: 
+            return {"result":False,'message':"crop not found" },404

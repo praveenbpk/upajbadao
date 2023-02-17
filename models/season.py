@@ -69,3 +69,34 @@ class Seasons():
             return True
         except Exception as e:
             raise ValueError(str(e))
+        
+class Get_season():
+    @classmethod
+    def getseason(cls,uuid,ln):
+        try:
+            connection,cursor=openDbconnection()
+            cursor.execute(""" SELECT * FROM m_season where uuid=%s and """,(uuid,ln))
+            rows=cursor.fetchone()
+            cursor.close()
+            connection.close()
+            if rows:
+                return rows
+            else:
+                False
+        except Exception as e:
+            raise ValueError(str(e))
+        
+    @classmethod    
+    def getcrop(uuid,ln):
+        try:
+            connection,cursor=openDbconnection()
+            cursor.execute(""" SELECT * FROM m_crop where uuid=%s""",(uuid,ln))
+            rows=cursor.fetchone()
+            cursor.close()
+            connection.close()
+            if rows:
+                return rows
+            else:
+                False
+        except Exception as e:
+            raise ValueError(str(e))
