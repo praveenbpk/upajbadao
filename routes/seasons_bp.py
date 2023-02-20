@@ -36,16 +36,7 @@ class Seasons(Resource):
             response = getseason(lan)
             return response
 
-# class bookmark(Resource):
-#      def get(self,uuid,fav):
-      
-#         if uuid and fav == 1:
-#             response = bookmarkAdd(uuid,fav)
-#             return response
-#         else:
-#             response = bookmarkremove(uuid,fav)
-#             return response    
-        
+
         
 class Location(Resource):
       def get(self,lan,uuid_state = None,uuid_district = None):
@@ -80,5 +71,26 @@ class UserDevice(Resource):
              return({'message':'bad request'}),400
     
     
+
+
+class get_season(Resource):
+    def get(self,uuid):
+        if uuid:
+            response=get_single_season(uuid)
+            return response  
+        else: 
+            return {"result":False,'message':"season not found" },404
+        
+class getcrop(Resource):
+    def get(self,uuid):
+        if uuid:
+            response=get_single_crop(uuid)
+            return response  
+        else: 
+            return {"result":False,'message':"crop not found" },404
+        
+        
+
+
 api.add_resource(Seasons,"/seasonlist/<lan>","/user")
 api.add_resource(Location,"/state/<lan>","/district/<uuid_state>/<lan>","/tehsil/<uuid_district>/<lan>")

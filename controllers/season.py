@@ -1,6 +1,6 @@
 
 from utilities.errors import invalid, not_found, unhandled, unauthorised, failed
-from models.season import Seasons
+from models.season import *
 
 
 
@@ -93,3 +93,23 @@ def user_device(**user_device):
         
     except Exception as e:
           return str(e)
+    
+def get_single_season(uuid,ln):
+    try:
+        if uuid:
+            data=Get_season.getseason(uuid,ln)
+            return {'result':True,'season':data},200
+        else:
+            return False
+    except Exception as e:
+        return str(e)
+    
+def get_single_crop(uuid,ln):
+    try:
+        if uuid:
+            data=Get_season.getcrop(uuid,ln)
+            return {'result':True,'season':data},200
+        else:
+            return False
+    except Exception as e:
+        return str(e)   
