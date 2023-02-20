@@ -28,17 +28,37 @@ class Seasons(Resource):
         #     return response    
 
 class get_season(Resource):
-    def get(self,uuid):
+    def get(self,uuid,lan):
         if uuid:
-            response=get_single_season(uuid)
+            response=get_single_season(uuid,lan)
             return response  
         else: 
             return {"result":False,'message':"season not found" },404
         
 class getcrop(Resource):
-    def get(self,uuid):
+    def get(self,uuid,lan):
         if uuid:
-            response=get_single_crop(uuid)
+            response=get_single_crop(uuid,lan)
             return response  
         else: 
             return {"result":False,'message':"crop not found" },404
+        
+class advisory(Resource):
+    def get (self,uuid,lan):
+        if uuid:
+            response=get_advisory(uuid,lan)
+            return response
+
+
+class govt_scheme(Resource):
+    def get(self,uuid,lan):
+        if uuid:
+            response=get_scheme(uuid,lan)
+            return response
+
+        
+api.add_resource(get_season,'/season/<uuid>/<lan>')
+api.add_resource(getcrop,'/crop/<uuid>/<lan>')
+api.add_resource(advisory,'/advisory/<uuid>/<lan>')
+api.add_resource(govt_scheme,'/scheme/<uuid>/<lan>')
+

@@ -32,22 +32,44 @@ def bookmark_add_remove(uuid,fav):
     except Exception as e:
           return str(e)
     
-def get_single_season(uuid,ln):
+def get_single_season(uuid,lan):
     try:
         if uuid:
-            data=Get_season.getseason(uuid,ln)
+            data=Get_season.getseason(uuid,lan)
             return {'result':True,'season':data},200
         else:
             return False
     except Exception as e:
         return str(e)
     
-def get_single_crop(uuid,ln):
+def get_single_crop(uuid,lan):
     try:
         if uuid:
-            data=Get_season.getcrop(uuid,ln)
+            data=Get_season.getcrop(uuid,lan)
             return {'result':True,'season':data},200
         else:
             return False
     except Exception as e:
-        return str(e)   
+        return str(e)  
+
+
+def get_advisory(uuid,lan):
+    try:
+        if uuid:
+            data=Get_advisory.getadvisory(uuid,lan)   
+            return {'result':True,'advisory':data},200
+        else:
+            return invalid('bad request'),400
+    except Exception as e:
+        return str(e)
+    
+def get_scheme(uuid,lan):
+    try:
+        if uuid:
+            data=Get_scheme.getscheme(uuid,lan)
+            return {'result':True,'scheme':data},200
+        else:
+            return invalid('bad request'),400
+    except Exception as e:
+        return str(e)
+    
