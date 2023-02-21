@@ -246,23 +246,64 @@ class Get_season():
             raise ValueError(str(e))
         
     @classmethod    
-    def getcrop(uuid,lan):
+    def getcrop(cls,uuid,lan):
         try:
             connection,cursor=openDbconnection()
             if lan=='1':
-               cursor.execute(""" SELECT uuid,name_en,desc_en, status, created_at, updated_at
-                 FROM m_crop where uuid=%s  """,(uuid))
-            elif lan=='2':
-                cursor.execute(""" SELECT uuid,name_hi,desc_hi, status, created_at, updated_at
-                 FROM m_crop where uuid=%s """,(uuid))
-            elif lan=='3':
-                cursor.execute(""" SELECT uuid,name_mr,desc_mr,status, created_at, updated_at
-                 FROM m_crop where uuid=%s """,(uuid))
-            rows=cursor.fetchone()
+               cursor.execute(""" SELECT name_en as crop_name from m_crop where uuid=%s""",uuid)
+               crop=cursor.fetchone()
+               print(crop)
+               cursor.execute(""" SELECT uuid from recomm_crop where uuid_crop=%s""",uuid)
+               r_uuid=cursor.fetchone()
+
+               cursor.execute(""" SELECT recomm_content.content1_type,recomm_content.content1_en,recomm_content.content2_type,
+                recomm_content.content2_en, recomm_content.content3_type,recomm_content.content3_en,recomm_content.title_en,
+                recomm_content.uuid_recomm_category from recomm_content 
+                join recomm_crop on recomm_content.uuid_recomm_crop= recomm_crop.uuid
+                where recomm_content.uuid_recomm_crop=%s""",r_uuid['uuid'])
+               content=cursor.fetchall()
+               for x in range(0,len(content)):
+                   cursor.execute(""" SELECT name_en as cate_name,uuid as cid from recomm_category where uuid=%s""",content[x]['uuid_recomm_category'])
+                   c_name=cursor.fetchall()
+
+            if lan=='2':
+               cursor.execute(""" SELECT name_hi as crop_name from m_crop where uuid=%s""",uuid)
+               crop=cursor.fetchone()
+               print(crop)
+               cursor.execute(""" SELECT uuid from recomm_crop where uuid_crop=%s""",uuid)
+               r_uuid=cursor.fetchone()
+
+               cursor.execute(""" SELECT recomm_content.content1_type,recomm_content.content1_hi,recomm_content.content2_type,
+                recomm_content.content2_hi, recomm_content.content3_type,recomm_content.content3_hi,recomm_content.title_hi,
+                recomm_content.uuid_recomm_category from recomm_content 
+                join recomm_crop on recomm_content.uuid_recomm_crop= recomm_crop.uuid
+                where recomm_content.uuid_recomm_crop=%s""",r_uuid['uuid'])
+               content=cursor.fetchall()
+               for x in range(0,len(content)):
+                   cursor.execute(""" SELECT name_hi as cate_name,uuid as cid from recomm_category where uuid=%s""",content[x]['uuid_recomm_category'])
+                   c_name=cursor.fetchall()
+
+            if lan=='3':
+               cursor.execute(""" SELECT name_mr as crop_name from m_crop where uuid=%s""",uuid)
+               crop=cursor.fetchone()
+               print(crop)
+               cursor.execute(""" SELECT uuid from recomm_crop where uuid_crop=%s""",uuid)
+               r_uuid=cursor.fetchone()
+
+               cursor.execute(""" SELECT recomm_content.content1_type,recomm_content.content1_mr,recomm_content.content2_type,
+                recomm_content.content2_mr, recomm_content.content3_type,recomm_content.content3_mr,recomm_content.title_mr,
+                recomm_content.uuid_recomm_category from recomm_content 
+                join recomm_crop on recomm_content.uuid_recomm_crop= recomm_crop.uuid
+                where recomm_content.uuid_recomm_crop=%s""",r_uuid['uuid'])
+               content=cursor.fetchall()
+               for x in range(0,len(content)):
+                   cursor.execute(""" SELECT name_mr as cate_name,uuid as cid from recomm_category where uuid=%s""",content[x]['uuid_recomm_category'])
+                   c_name=cursor.fetchall()       
+
             cursor.close()
             connection.close()
-            if rows:
-                return rows
+            if content and crop and c_name:
+                return crop,c_name,content
             else:
                 False
         except Exception as e:
