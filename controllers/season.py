@@ -42,7 +42,7 @@ def get_tehsil(lan,uuid_district):
      try:     
         result = Seasons.gettehsil(lan,uuid_district)
         if result != False:
-            print(result)
+            
             return ({'result':True,'data':result}), 200
         else:
             return invalid('Bad request',400)
@@ -67,6 +67,7 @@ def get_tehsil(lan,uuid_district):
 #           return str(e)
 
 def user_create(**user):
+    print(user['uuid_tehsil'])
     try:   
         if user['uuid_tehsil']:
             
@@ -146,4 +147,19 @@ def get_scheme(uuid,lan):
             return invalid('bad request'),400
     except Exception as e:
         return str(e)
-    
+
+
+def getAlllist(text):
+     try:     
+        if len(text) >= 4 :
+         print(text,'length')
+         croplist = Seasons.getsearch_crop_data(text)
+         seasonlist = Seasons.getsearch_season_data(text)
+         advisorylist = Seasons.getsearch_advisorylist(text)
+         goverlist = Seasons.getseaarch_goverschemelist(text)
+         Alllist = croplist,seasonlist,advisorylist,goverlist
+         return ({'result':True,'data':Alllist}), 200
+        else:
+            return invalid('Bad request',400)
+     except Exception as e:
+          return str(e)

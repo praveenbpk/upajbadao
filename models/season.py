@@ -34,7 +34,103 @@ class Seasons():
                 return False
         except Exception as e:
             return e
-        
+  
+  @classmethod 
+  def getsearch_crop_data(cls,text):
+        print(text)
+        text = text+'%'
+        try:
+            connection, cursor = openDbconnection()
+            print(text)
+            if text:
+                    cursor.execute(
+                            
+                            """SELECT uuid as crop_uuid,name_en,name_hi, name_mr, desc_en, desc_hi, desc_mr, image, status
+                            FROM m_crop WHERE  name_en LIKE %s OR name_hi LIKE %s  OR name_mr LIKE %s""",(text,text,text)
+                        ) 
+            account = cursor.fetchall()
+            cursor.close()
+            connection.close()
+            
+            if account:
+                return account
+            else:
+                return False
+        except Exception as e:
+            return e
+  @classmethod 
+  def getsearch_season_data(cls,text):
+        print(text)
+        text = text+'%'
+        try:
+            connection, cursor = openDbconnection()
+            print(text)
+            if text:
+                    cursor.execute(
+                            
+                            """SELECT  uuid as season_uuid, name_en, name_hi, name_mr, desc_en, desc_hi, desc_mr, image, status
+                            FROM m_season WHERE  name_en LIKE %s OR name_hi LIKE %s  OR name_mr LIKE %s""",(text,text,text)
+                        )
+            account = cursor.fetchall()
+            print(account,'details')
+            cursor.close()
+            connection.close()
+            
+            if account:
+                return account
+            else:
+                return False
+        except Exception as e:
+            return e
+  @classmethod 
+  def getsearch_advisorylist(cls,text):
+        print(text)
+        text = text+'%'
+        try:
+            connection, cursor = openDbconnection()
+            print(text)
+            if text:
+                      cursor.execute(
+                            
+                            """SELECT uuid as crop_uuid,uuid, uuid_tehsil, category_en, category_hi, category_mr, title_en, title_hi, title_mr, desc_en, desc_hi, desc_mr, image, address_en, address_hi, address_mr, geo_lat, geo_lng, status
+                            FROM advisory WHERE title_en LIKE %s OR title_hi LIKE %s  OR title_mr LIKE %s """,(text,text,text)
+                        )
+            account = cursor.fetchall()
+            print(account,'details')
+            cursor.close()
+            connection.close()
+            
+            if account:
+                return account
+            else:
+                return False
+        except Exception as e:
+            return e
+  
+  @classmethod 
+  def getseaarch_goverschemelist(cls,text):
+        print(text)
+        text = text+'%'
+        try:
+            connection, cursor = openDbconnection()
+            print(text)
+            if text:
+                    cursor.execute(
+                            
+                          """SELECT uuid as scheme_uuid,uuid_tehsil, category_en, category_hi, category_mr, title_en, title_hi, title_mr, desc_en, desc_hi, desc_mr, image, weblink, downloadlink, status
+                            FROM govt_scheme WHERE  title_en LIKE %s OR title_hi LIKE %s  OR title_mr LIKE %s""",(text,text,text)
+                       )
+            account = cursor.fetchall()
+            print(account,'details')
+            cursor.close()
+            connection.close()
+            
+            if account:
+                return account
+            else:
+                return False
+        except Exception as e:
+            return e 
   @classmethod 
   def bookmark_add(cls,uuid,fav):
         try:
@@ -108,11 +204,12 @@ class Seasons():
 
   @classmethod
   def Userdevice(cls,**userdevice):
+        print(userdevice)
         try:
             connection, cursor = openDbconnection()
             user_uuid = str(uuid.uuid4())
             cursor.execute(
-                    "INSERT INTO user_device(uuid,uuid_user,device_id,device_name,device_model,platform_type,os_version,fcm_token) VALUES (  % s,% s, % s, % s,% s, % s, % s, % s)",
+                    "INSERT INTO user_device (uuid,uuid_user,device_id,device_name,device_model,platform_type,os_version,fcm_token) VALUES (  % s,% s, % s, % s,% s, % s, % s, % s)",
                     (
                      user_uuid,
                      userdevice['uuid_user'],
@@ -197,6 +294,8 @@ class Seasons():
   def gettehsil(cls,lan,uuid_district):                                       
         
         try:
+            print(uuid_district) 
+            
             connection, cursor = openDbconnection()
             if lan == '1' :
                 cursor.execute(
@@ -228,13 +327,13 @@ class Get_season():
             connection,cursor=openDbconnection()
             if lan=='1':
                cursor.execute(""" SELECT uuid,name_en,desc_en, status, created_at, updated_at
-                 FROM m_season where uuid=%s  """,(uuid))
+                 FROM m_crop where uuid=%s  """,(uuid))
             elif lan=='2':
                 cursor.execute(""" SELECT uuid,name_hi,desc_hi,status, created_at, updated_at
-                 FROM m_season where uuid=%s """,(uuid))
+                 FROM m_crop where uuid=%s """,(uuid))
             elif lan=='3':
                 cursor.execute(""" SELECT uuid,name_mr,desc_mr,status, created_at, updated_at
-                 FROM m_season where uuid=%s """,(uuid))
+                 FROM m_cro where uuid=%s """,(uuid))
             rows=cursor.fetchone()
             cursor.close()
             connection.close()
@@ -408,3 +507,4 @@ class Get_scheme():
         except Exception as e:
             raise ValueError(str(e))
             
+

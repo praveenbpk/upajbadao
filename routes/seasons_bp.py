@@ -13,7 +13,8 @@ class Seasons(Resource):
         
         if ( request.method == "POST"  ):
             
-            name = request.form["name"]
+            name = request.form["name"],
+            print(name,'name')
             phonenumber = request.form["phonenumber"]
             email = request.form["email"]
             image = request.form["image"]
@@ -22,6 +23,7 @@ class Seasons(Resource):
             uuid_tehsil = request.form["uuid_tehsil"]
             geo_lat = request.form["geo_lat"]
             geo_lng = request.form["geo_lng"]
+            print(geo_lng)
          
             response = user_create(name = name,phonenumber = phonenumber,email =email,image =image,address1 =address1,address2=address2,uuid_tehsil=uuid_tehsil,geo_lat=geo_lat,geo_lng=geo_lng)
             return response
@@ -73,7 +75,7 @@ class UserDevice(Resource):
     
 
 
-class get_season(Resource):
+class get_croplist(Resource):
     def get(self,uuid,lan):
         if uuid:
             response=get_single_season(uuid,lan)
@@ -81,10 +83,19 @@ class get_season(Resource):
         else: 
             return {"result":False,'message':"season not found" },404
         
-class getcrop(Resource):
+class getcrop_details(Resource):
     def get(self,uuid,lan):
         if uuid:
             response=get_single_crop(uuid,lan)
+            return response  
+        else: 
+            return {"result":False,'message':"crop not found" },404
+
+        
+class search(Resource):
+    def get(self,uuid):
+        if uuid:
+            response=get_single_crop(uuid)
             return response  
         else: 
             return {"result":False,'message':"crop not found" },404
@@ -95,7 +106,13 @@ class advisory(Resource):
             response=get_advisory(uuid,lan)
             return response
 
-
+class search(Resource):
+      def get(self,text):
+          
+          if text is not None  :
+              response = getAlllist(text)
+              return response
+          
 class govt_scheme(Resource):
     def get(self,uuid,lan):
         if uuid:
@@ -103,13 +120,12 @@ class govt_scheme(Resource):
             return response
 
         
-api.add_resource(get_season,'/season/<uuid>/<lan>')
-api.add_resource(getcrop,'/crop/<uuid>/<lan>')
+api.add_resource(get_croplist,'/croplist/<uuid>/<lan>')
+api.add_resource(search,'/search/<text>')
+api.add_resource(getcrop_details,'/crop_details/<uuid>/<lan>')
 api.add_resource(advisory,'/advisory/<uuid>/<lan>')
 api.add_resource(govt_scheme,'/scheme/<uuid>/<lan>')
 
-        
-
-
 api.add_resource(Seasons,"/seasonlist/<lan>","/user")
+api.add_resource(UserDevice,"/user_device")
 api.add_resource(Location,"/state/<lan>","/district/<uuid_state>/<lan>","/tehsil/<uuid_district>/<lan>")
