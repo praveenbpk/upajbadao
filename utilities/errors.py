@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify
-
+import sys 
+sys.dont_write_bytecode = True
 
 # init blueprint
 errors = Blueprint("errors", __name__)

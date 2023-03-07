@@ -2,7 +2,8 @@ from flask_restful import Resource, Api
 from flask import Flask, request
 from flask import Blueprint
 from controllers.season import *
-
+import sys 
+sys.dont_write_bytecode = True
 
 season__bp= Blueprint('season__bp',__name__)
 api = Api(season__bp)
@@ -71,60 +72,14 @@ class UserDevice(Resource):
         
         else:
              return({'message':'bad request'}),400
-    
-    
 
-
-class get_croplist(Resource):
-    def get(self,uuid,lan):
-        if uuid:
-            response=get_single_season(uuid,lan)
-            return response  
-        else: 
-            return {"result":False,'message':"season not found" },404
-        
-class getcrop_details(Resource):
-    def get(self,uuid,lan):
-        if uuid:
-            response=get_single_crop(uuid,lan)
-            return response  
-        else: 
-            return {"result":False,'message':"crop not found" },404
-
-        
-class search(Resource):
-    def get(self,uuid):
-        if uuid:
-            response=get_single_crop(uuid)
-            return response  
-        else: 
-            return {"result":False,'message':"crop not found" },404
-        
-class advisory(Resource):
-    def get (self,uuid,lan):
-        if uuid:
-            response=get_advisory(uuid,lan)
-            return response
 
 class search(Resource):
       def get(self,text):
-          
           if text is not None  :
               response = getAlllist(text)
               return response
           
-class govt_scheme(Resource):
-    def get(self,uuid,lan):
-        if uuid:
-            response=get_scheme(uuid,lan)
-            return response
-
-        
-api.add_resource(get_croplist,'/croplist/<uuid>/<lan>')
-api.add_resource(search,'/search/<text>')
-api.add_resource(getcrop_details,'/crop_details/<uuid>/<lan>')
-api.add_resource(advisory,'/advisory/<uuid>/<lan>')
-api.add_resource(govt_scheme,'/scheme/<uuid>/<lan>')
 
 api.add_resource(Seasons,"/seasonlist/<lan>","/user")
 api.add_resource(UserDevice,"/user_device")

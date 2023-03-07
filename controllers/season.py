@@ -1,7 +1,7 @@
-
 from utilities.errors import invalid, not_found, unhandled, unauthorised, failed
 from models.season import *
-
+import sys 
+sys.dont_write_bytecode = True
 
 
 def getseason(lan):
@@ -95,58 +95,11 @@ def user_device(**user_device):
     except Exception as e:
           return str(e)
     
-def get_single_season(uuid,lan):
-    try:
-        if uuid:
-            data=Get_season.getseason(uuid,lan)
-            return {'result':True,'season':data},200
-        else:
-            return False
-    except Exception as e:
-        return str(e)
-    
-def get_single_crop(uuid,lan):
-    try:
-        if uuid:
-            data=Get_season.getcrop(uuid,lan)
-            
-            crop,c_name,content=data
-            for x in range(0,len(crop)):
-                data={}
-                data['crop']=crop
-                for x in range(0,len(c_name)):
-                    data['recomm']=c_name
-                    for y in data['recomm']:
-                        y['content']=content
-                        print(y)
-                    print(c_name)
-                
-                return {'result':True,'data':data},200
-        else:
-            return False
-    except Exception as e:
-        return str(e)  
 
 
-def get_advisory(uuid,lan):
-    try:
-        if uuid:
-            data=Get_advisory.getadvisory(uuid,lan)   
-            return {'result':True,'advisory':data},200
-        else:
-            return invalid('bad request'),400
-    except Exception as e:
-        return str(e)
-    
-def get_scheme(uuid,lan):
-    try:
-        if uuid:
-            data=Get_scheme.getscheme(uuid,lan)
-            return {'result':True,'scheme':data},200
-        else:
-            return invalid('bad request'),400
-    except Exception as e:
-        return str(e)
+
+
+
 
 
 def getAlllist(text):
